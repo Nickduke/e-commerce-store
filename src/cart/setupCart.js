@@ -23,12 +23,47 @@ export const addToCart = (id) => {
     cart = [...cart, product];
     addToCartDOM(product);
   } else {
+    // update values
   }
+  // add one to the item count
+  displayCartItemCount();
+
+  // display cart totals
+  displayCartTotal();
+
+  // set cart in local storage
+  setStorageItem('cart', cart);
+
   openCart();
 };
 
+function displayCartItemCount() {
+  const amount = cart.reduce((total, cartItem) => {
+    return (total += cartItem.amount);
+  }, 0);
+  cartItemCountDOM.textContent = amount;
+}
+
+function displayCartTotal() {
+  let total = cart.reduce((total, cartItem) => {
+    return (total += cartItem.price * cartItem.amount);
+  }, 0);
+  cartTotalDOM.textContent = `Total: ${formatPrice(total)}`;
+}
+
+const displayCartItemsDOM = () => {
+  cart.forEach((cartItem) => {
+    addToCartDOM(cartItem);
+  });
+};
+
+const setupCartFunctionality = () => {};
+
 const init = () => {
-  console.log(cart);
+  displayCartItemCount();
+  displayCartTotal();
+  displayCartItemsDOM();
+  setupCartFunctionality();
 };
 
 init();
